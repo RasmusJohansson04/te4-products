@@ -8,10 +8,6 @@ app.use(cors())
 
 app.get('/', async function (req, res) {
     const allProducts = await prisma.product.findMany({
-        include: {
-            price: true,
-            title: true,
-        },
     })
 
     res.json({

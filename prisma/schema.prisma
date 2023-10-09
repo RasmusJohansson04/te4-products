@@ -12,19 +12,12 @@ datasource db {
 
 // https://oneweekgraphql.com/chapters/backend/7-create-schema-and-resolver-for-fetching-a-cart-by-id
 model Product {
-  id         Int      @id @default(autoincrement())
-  name       String
-  content    String?
-  price      Int
-  quantity   Int
-  category   Category @relation(fields: [categoryId], references: [id])
-  categoryId Int
-}
-
-model Category {
-  id       Int       @id @default(autoincrement())
+  id       Int     @id @default(autoincrement())
   name     String
-  products Product[]
+  content  String?
+  price    Int
+  quantity Int
+  category String
 }
 
 model Cart {

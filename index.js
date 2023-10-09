@@ -6,13 +6,13 @@ async function main() {
     await prisma.product.create({
         data: {
             name: 'Alice',
-            email: 'alice@prisma.io',
-            posts: {
-                create: { title: 'Hello World' },
-            },
-            profile: {
-                create: { bio: 'I like turtles' },
-            },
+            price: 10,
+            quantity: 1,
+            category: {
+                create: {
+                    name: "first"
+                }
+            }
         },
     })
 
