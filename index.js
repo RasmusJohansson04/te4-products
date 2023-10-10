@@ -8,11 +8,7 @@ async function main() {
             name: 'Alice',
             price: 10,
             quantity: 1,
-            category: {
-                create: {
-                    name: "first"
-                }
-            }
+            category: 'First',
         },
     })
 
