@@ -8,7 +8,7 @@ app.use(cors())
 
 app.get('/', async function (req, res) {
     const getCategory = await prisma.product.findMany({
-        where: { categoryId: 5 }
+        where: { category: 'First' }
     })
 
     const allProducts = await prisma.product.findMany({
