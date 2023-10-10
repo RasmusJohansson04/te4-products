@@ -5,10 +5,15 @@ const prisma = new PrismaClient()
 async function main() {
     await prisma.product.create({
         data: {
-            name: 'Alice',
+            name: 'Lerberg',
             price: 10,
-            quantity: 1,
-            category: 'First',
+            quantity: 1
+        },
+    })
+
+    await prisma.category.create({
+        data: {
+            name: 'Chair',
         },
     })
 

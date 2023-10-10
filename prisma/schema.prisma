@@ -12,18 +12,36 @@ datasource db {
 
 // https://oneweekgraphql.com/chapters/backend/7-create-schema-and-resolver-for-fetching-a-cart-by-id
 model Product {
-  id       Int     @id @default(autoincrement())
-  name     String
-  content  String?
-  price    Int
-  quantity Int
-  category String
+  id         Int                   @id @default(autoincrement())
+  name       String
+  content    String?
+  price      Float
+  quantity   Int
+  categories CategoriesOnProduct[]
+  cartId     Int?
+  cart       Cart?                 @relation(fields: [cartId], references: [id])
+}
+
+model Category {
+  id      Int                   @id @default(autoincrement())
+  name    String
+  product CategoriesOnProduct[]
+}
+
+model CategoriesOnProduct {
+  productId  Int
+  product    Product  @relation(fields: [productId], references: [id])
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  @@id([productId, categoryId])
 }
 
 model Cart {
-  userId  Int  @id
-  user    User @relation(fields: [userId], references: [id])
-  itemIds Int?
+  id       Int       @id @default(autoincrement())
+  products Product[]
+  userId   Int
+  user     User      @relation(fields: [userId], references: [id])
 }
 
 model User {
@@ -31,5 +49,5 @@ model User {
   name     String @db.VarChar(255)
   email    String @unique
   password String
-  cart     Cart?
+  cart     Cart[]
 }
