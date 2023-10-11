@@ -3,19 +3,41 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
 async function main() {
-    await prisma.product.create({
+
+    // await prisma.product.create({
+    //     data: {
+    //         name: 'Lerberg',
+    //         price: 10,
+    //         quantity: 1
+    //     },
+    // })
+
+    // await prisma.category.create({
+    //     data: {
+    //         name: 'Chair',
+    //     },
+    // })
+
+    const assignCategories = await prisma.product.create({
         data: {
-            name: 'Lerberg',
-            price: 10,
-            quantity: 1
+            name: 'Holger',
+            price: 200,
+            quantity: 3,
+            categories: {
+                create: [
+                    {
+                        category: {
+                            create: {
+                                name: 'Chair'
+                            }
+                        },
+                    },
+                ],
+            },
         },
     })
 
-    await prisma.category.create({
-        data: {
-            name: 'Chair',
-        },
-    })
+    assignCategories
 
     // const post = await prisma.post.update({
     //     where: { id: 1 },

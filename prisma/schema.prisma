@@ -18,30 +18,27 @@ model Product {
   price      Float
   quantity   Int
   categories CategoriesOnProduct[]
-  cartId     Int?
-  cart       Cart?                 @relation(fields: [cartId], references: [id])
 }
 
 model Category {
   id      Int                   @id @default(autoincrement())
-  name    String
+  name    String                @unique
   product CategoriesOnProduct[]
 }
 
 model CategoriesOnProduct {
-  productId  Int
   product    Product  @relation(fields: [productId], references: [id])
-  categoryId Int
+  productId  Int
   category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
 
   @@id([productId, categoryId])
 }
 
 model Cart {
-  id       Int       @id @default(autoincrement())
-  products Product[]
-  userId   Int
-  user     User      @relation(fields: [userId], references: [id])
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
 }
 
 model User {
