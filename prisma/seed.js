@@ -1,45 +1,57 @@
 const { PrismaClient } = require('@prisma/client')
 
 const prisma = new PrismaClient()
+const { faker } = require('@faker-js/faker')
 
 async function main() {
+
+
     for (let i = 0; i < 100; i++) {
-        const product2 = await prisma.product.create({
-            data: {
-                name: `Ivar ${i + 1}`,
-                price: 350,
-                quantity: 4,
-                categories: {
-                    create: [
-                        {
-                            category: {
-                                connectOrCreate: {
-                                    create: {
-                                        name: 'Table'
-                                    },
-                                    where: {
-                                        name: 'Table'
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            category: {
-                                connectOrCreate: {
-                                    create: {
-                                        name: 'Björk'
-                                    },
-                                    where: {
-                                        name: 'Björk'
-                                    }
+        try {
+            await prisma.product.create({
+                data: product2(),
+            })
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
+    function product2() {
+        return {
+            name: faker.commerce.productName(),
+            price: Number(faker.commerce.price()),
+            quantity: 21,
+            categories: {
+                create: [
+                    {
+                        category: {
+                            connectOrCreate: {
+                                create: {
+                                    name: faker.commerce.product()
+                                },
+                                where: {
+                                    name: faker.commerce.product()
                                 }
                             }
                         }
-                    ]
-                },
+                    },
+                    // {
+                    //     category: {
+                    //         connectOrCreate: {
+                    //             create: {
+                    //                 name: 'Björk'
+                    //             },
+                    //             where: {
+                    //                 name: 'Björk'
+                    //             }
+                    //         }
+                    //     }
+                    // }
+                ]
             }
-        })
+        }
     }
+
     const product = await prisma.product.create({
         data: {
             name: 'Holger',
