@@ -3,6 +3,43 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
 async function main() {
+    for (let i = 0; i < 100; i++) {
+        const product2 = await prisma.product.create({
+            data: {
+                name: `Ivar ${i + 1}`,
+                price: 350,
+                quantity: 4,
+                categories: {
+                    create: [
+                        {
+                            category: {
+                                connectOrCreate: {
+                                    create: {
+                                        name: 'Table'
+                                    },
+                                    where: {
+                                        name: 'Table'
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            category: {
+                                connectOrCreate: {
+                                    create: {
+                                        name: 'Björk'
+                                    },
+                                    where: {
+                                        name: 'Björk'
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+            }
+        })
+    }
     const product = await prisma.product.create({
         data: {
             name: 'Holger',
@@ -27,31 +64,6 @@ async function main() {
         }
     })
 
-    const product2 = await prisma.product.create({
-        data: {
-            name: 'Ivar',
-            price: 350,
-            quantity: 4,
-            categories: {
-                create: [
-                    {
-                        category: {
-                            connectOrCreate: {
-                                create: {
-                                    name: 'Table'
-                                },
-                                where: {
-                                    name: 'Table'
-                                }
-                            }
-                        }
-                    }
-                ]
-            },
-        }
-    })
-    console.log(product)
-    console.log(product2)
 }
 
 main()

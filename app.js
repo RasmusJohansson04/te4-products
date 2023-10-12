@@ -6,14 +6,40 @@ const cors = require('cors')
 
 app.use(cors())
 
-app.get('/', async function (req, res) {
-    const allProducts = await prisma.product.findMany({
-        where: { name: 'Lerberg' }
-    })
+app.get('/product', async function (req, res) {
+    const { page = 1, perPage = 10 } = req.query
 
-    res.json({
-        data: allProducts,
-    })
+    try {
+        const allProducts = await prisma.product.findMany({
+            skip: (Number(page) - 1) * Number(perPage),
+            take: Number(perPage),
+            include: {
+                categories: true,
+            }
+        })
+        res.json({
+            data: allProducts,
+        })
+    } catch (error) {
+        res.send('Error')
+    }
+})
+
+app.get('/product/:id', async function (req, res) {
+    const productId = req.params.id
+    try {
+        const product = await prisma.product.findUnique({
+            where: { id: Number(productId) }
+        })
+        if (product.data !== null) {
+            res.json({
+                data: product
+            })
+        }
+    } catch (error) {
+        console.error(error)
+        res.send('Error')
+    }
 })
 
 app.listen(3000)

@@ -13,7 +13,7 @@ datasource db {
 // https://oneweekgraphql.com/chapters/backend/7-create-schema-and-resolver-for-fetching-a-cart-by-id
 model Product {
   id         Int                   @id @default(autoincrement())
-  name       String
+  name       String                @unique
   content    String?
   price      Float
   quantity   Int
