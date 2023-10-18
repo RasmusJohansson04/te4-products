@@ -42,4 +42,28 @@ app.get('/product/:id', async function (req, res) {
     }
 })
 
+app.get('/product/category/:id', async function (req, res) {
+    const categoryId = req.params.id
+    try {
+        const products = await prisma.product.findMany({
+            include: {
+                categories: true
+            },
+            where: {
+                categories: {
+                    some: {
+                        categoryId: Number(categoryId)
+                    }
+                }
+            }
+        })
+        res.json({
+            data: products
+        })
+    } catch (error) {
+        console.error(error)
+        res.send(error)
+    }
+})
+
 app.listen(3000)
